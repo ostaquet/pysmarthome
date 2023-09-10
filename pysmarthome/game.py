@@ -1,5 +1,7 @@
 import pygame
 
+from pysmarthome.house import House
+
 
 def main():
     # Initialize Pygame
@@ -12,9 +14,13 @@ def main():
     # Set up the clock
     clock = pygame.time.Clock()
 
-    # Game loop
+    # Set up internal logic
     is_running: bool = True
+    last_tick: int = pygame.time.get_ticks()
+    house: House = House()
+    outside_temperature: float = 30.0
 
+    # Game loop
     while is_running:
         # Handle events
         for event in pygame.event.get():
@@ -22,6 +28,12 @@ def main():
                 is_running = False
 
         # Update pysmarthome logic
+        current_tick: int = pygame.time.get_ticks()
+        if current_tick - last_tick >= 1000:
+            house.apply(outside_temperature)
+            last_tick = current_tick
+            print("***** OUTSIDE TEMPERATURE " + str(outside_temperature) + "°C ******")
+            house.print_debug_status()
 
         # Render graphics
         screen.fill((0, 0, 0))
