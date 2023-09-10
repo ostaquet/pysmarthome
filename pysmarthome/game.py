@@ -1,5 +1,6 @@
 import pygame
 
+from pysmarthome.constants import EVENT_1SECOND
 from pysmarthome.house import House
 
 
@@ -11,8 +12,9 @@ def main():
     screen = pygame.display.set_mode((800, 600))
     pygame.display.set_caption("Smart Home Simulator")
 
-    # Set up the clock
+    # Set up the clock & timers
     clock = pygame.time.Clock()
+    pygame.time.set_timer(EVENT_1SECOND, 1000, 0)
 
     # Set up internal logic
     is_running: bool = True
@@ -26,14 +28,12 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 is_running = False
+            if event.type == EVENT_1SECOND:
+                house.apply(outside_temperature)
+                print("***** OUTSIDE TEMPERATURE " + str(outside_temperature) + "°C ******")
+                house.print_debug_status()
 
         # Update pysmarthome logic
-        current_tick: int = pygame.time.get_ticks()
-        if current_tick - last_tick >= 1000:
-            house.apply(outside_temperature)
-            last_tick = current_tick
-            print("***** OUTSIDE TEMPERATURE " + str(outside_temperature) + "°C ******")
-            house.print_debug_status()
 
         # Render graphics
         screen.fill((0, 0, 0))
