@@ -18,7 +18,6 @@ def main():
 
     # Set up internal logic
     is_running: bool = True
-    last_tick: int = pygame.time.get_ticks()
     house: House = House()
     outside_temperature: float = 30.0
 
