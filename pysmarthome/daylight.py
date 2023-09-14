@@ -1,4 +1,5 @@
 import math
+from typing import Tuple
 
 
 class Daylight:
@@ -12,7 +13,7 @@ class Daylight:
         if self._current_6min_tick >= 240:
             self._current_6min_tick = 0
 
-    def get_virtual_time(self) -> tuple[int, int]:
+    def get_virtual_time(self) -> Tuple[int, int]:
         hours: int = math.floor((self._current_6min_tick * 6) / 60.0)
         minutes: int = (self._current_6min_tick * 6) % 60
         return hours, minutes
