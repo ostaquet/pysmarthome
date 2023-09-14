@@ -1,6 +1,7 @@
 import pygame
 
 from pysmarthome.constants import EVENT_1SECOND
+from pysmarthome.daylight import Daylight
 from pysmarthome.house import House
 
 
@@ -19,6 +20,7 @@ def main():
     # Set up internal logic
     is_running: bool = True
     house: House = House()
+    daylight: Daylight = Daylight()
     outside_temperature: float = 30.0
 
     # Game loop
@@ -28,7 +30,10 @@ def main():
             if event.type == pygame.QUIT:
                 is_running = False
             if event.type == EVENT_1SECOND:
+                daylight.pass_time()
                 house.apply(outside_temperature)
+                print("***** TIME " + str(daylight.get_virtual_time()[0]) + "h "
+                      + str(daylight.get_virtual_time()[1]) + "min *****")
                 print("***** OUTSIDE TEMPERATURE " + str(outside_temperature) + "°C ******")
                 house.print_debug_status()
 
