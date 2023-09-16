@@ -1,5 +1,4 @@
 from typing import List
-
 import pytest
 
 from pysmarthome.exceptions import InputParameterError
@@ -34,11 +33,11 @@ def test_ensure_that_apply_is_applied_on_all_rooms():
 
     initial_temperature: List[float] = []
 
-    for i in range (0, house.count_rooms()):
+    for i in range(0, house.count_rooms()):
         initial_temperature.append(house.get_room(i).get_temperature())
         house.get_room(i).heating_enabled = True
 
     house.apply(30.0)
 
-    for i in range (0, house.count_rooms()):
+    for i in range(0, house.count_rooms()):
         assert abs(initial_temperature[i] - house.get_room(i).get_temperature()) > 0.1

@@ -11,7 +11,7 @@ class House:
 
     def get_room(self, room_number: int) -> Room:
         if room_number < 0 or room_number >= self.count_rooms():
-            raise InputParameterError('Invalid room number ' + str(room_number))
+            raise InputParameterError(f"Invalid room number {room_number}")
 
         return self._rooms[room_number]
 
@@ -34,4 +34,4 @@ class House:
                 status = status + "ON"
             else:
                 status = status + "OFF"
-            print(room.get_name() + " + T° " + str(room.get_temperature()) + "°C (" + status + ")")
+            print(f"{room.get_name()} - T° {room.get_temperature():.02f}°C ({status})")

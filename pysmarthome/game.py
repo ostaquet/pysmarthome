@@ -1,8 +1,9 @@
 import pygame
 
-from pysmarthome.constants import EVENT_1SECOND
-from pysmarthome.daylight import Daylight
+from pysmarthome.common import EVENT_TIME_TICK
 from pysmarthome.house import House
+from pysmarthome.temperature import OutsideTemperatureSimulator
+from pysmarthome.timeticker import TimeTicker
 
 
 def main():
@@ -15,13 +16,14 @@ def main():
 
     # Set up the clock & timers
     clock = pygame.time.Clock()
-    pygame.time.set_timer(EVENT_1SECOND, 1000, 0)
+    time_ticker: TimeTicker = TimeTicker(240, 1000)
+    pygame.time.set_timer(EVENT_TIME_TICK, time_ticker.get_real_step_in_millis(), 0)
 
     # Set up internal logic
     is_running: bool = True
     house: House = House()
-    daylight: Daylight = Daylight()
-    outside_temperature: float = 30.0
+    temperature_generator: OutsideTemperatureSimulator \
+        = OutsideTemperatureSimulator(time_ticker.get_number_of_ticks_per_virtual_day(), 5, 25)
 
     # Game loop
     while is_running:
@@ -29,12 +31,12 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 is_running = False
-            if event.type == EVENT_1SECOND:
-                daylight.pass_time()
+            if event.type == EVENT_TIME_TICK:
+                time_ticker.increment()
+                outside_temperature: float \
+                    = temperature_generator.get_temperature_at_tick(time_ticker.get_current_tick())
                 house.apply(outside_temperature)
-                print("***** TIME " + str(daylight.get_virtual_time()[0]) + "h "
-                      + str(daylight.get_virtual_time()[1]) + "min *****")
-                print("***** OUTSIDE TEMPERATURE " + str(outside_temperature) + "°C ******")
+                print(f"******** TIME {time_ticker.str()} - OUTSIDE TEMPERATURE {outside_temperature:.02f}°C *********")
                 house.print_debug_status()
 
         # Update pysmarthome logic
