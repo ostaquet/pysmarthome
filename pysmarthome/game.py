@@ -1,18 +1,11 @@
-from typing import List
-
 import pygame
-from pygame import Surface
 
 from challenge.thermostat import use_thermostat
 from pysmarthome.common import EVENT_TIME_TICK
 from pysmarthome.house import House
-from pysmarthome.room import Room
+from pysmarthome.rendering import render_all
 from pysmarthome.temperature import OutsideTemperatureSimulator
 from pysmarthome.timeticker import TimeTicker
-
-
-def render(screen: Surface, time: str, outside_temperature: float, rooms: List[Room]):
-    screen.fill((0, 0, 0))
 
 
 def main():
@@ -25,7 +18,7 @@ def main():
 
     # Set up the clock & timers
     clock = pygame.time.Clock()
-    time_ticker: TimeTicker = TimeTicker(240, 1000)
+    time_ticker: TimeTicker = TimeTicker(240, 500, 100)
     pygame.time.set_timer(EVENT_TIME_TICK, time_ticker.get_real_step_in_millis(), 0)
 
     # Set up internal logic
@@ -55,7 +48,7 @@ def main():
                 house.print_debug_status()
 
         # Render graphics
-        render(screen, time_ticker.str(), outside_temperature, house.get_rooms())
+        render_all(screen, time_ticker, outside_temperature, house.get_rooms())
         pygame.display.flip()
 
         # Limit the frame rate

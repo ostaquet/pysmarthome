@@ -10,6 +10,15 @@ def test_time_ticker_init():
     assert ticker.get_real_step_in_millis() == 1000
 
 
+def test_time_ticker_init_start_at_tick():
+    ticker: TimeTicker = TimeTicker(240, 1000, 90)
+
+    assert ticker.get_current_tick() == 90
+    assert ticker.get_number_of_ticks_per_virtual_day() == 240
+    assert ticker.get_virtual_step_in_minutes() == 6
+    assert ticker.get_real_step_in_millis() == 1000
+
+
 def test_pass_time_and_virtual_time_computation():
     ticker: TimeTicker = TimeTicker(240, 1000)
 

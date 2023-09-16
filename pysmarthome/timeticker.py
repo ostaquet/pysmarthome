@@ -4,8 +4,8 @@ import math
 class TimeTicker:
     # Define time tick (1 tick = 6 minutes virtual = 1s real on screen
     # It is expected that a TimeTick is between 0 and 240
-    def __init__(self, number_of_ticks_per_virtual_day: int = 240, real_millis_per_tick: int = 1000):
-        self._ticks: int = 0
+    def __init__(self, number_of_ticks_per_virtual_day: int = 240, real_millis_per_tick: int = 1000, start_at_tick: int = 0):
+        self._ticks: int = start_at_tick
         self._real_millis_per_tick: int = real_millis_per_tick
         self._24h_ticks: int = number_of_ticks_per_virtual_day
 
