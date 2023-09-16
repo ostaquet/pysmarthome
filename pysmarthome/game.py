@@ -1,10 +1,18 @@
+from typing import List
+
 import pygame
+from pygame import Surface
 
 from challenge.thermostat import use_thermostat
 from pysmarthome.common import EVENT_TIME_TICK
 from pysmarthome.house import House
+from pysmarthome.room import Room
 from pysmarthome.temperature import OutsideTemperatureSimulator
 from pysmarthome.timeticker import TimeTicker
+
+
+def render(screen: Surface, time: str, outside_temperature: float, rooms: List[Room]):
+    screen.fill((0, 0, 0))
 
 
 def main():
@@ -25,6 +33,7 @@ def main():
     house: House = House()
     temperature_generator: OutsideTemperatureSimulator \
         = OutsideTemperatureSimulator(time_ticker.get_number_of_ticks_per_virtual_day(), 5, 25)
+    outside_temperature: float = temperature_generator.get_temperature_at_tick(time_ticker.get_current_tick())
 
     # Game loop
     while is_running:
@@ -35,8 +44,7 @@ def main():
             if event.type == EVENT_TIME_TICK:
                 # Apply internal logic at each time tick
                 time_ticker.increment()
-                outside_temperature: float \
-                    = temperature_generator.get_temperature_at_tick(time_ticker.get_current_tick())
+                outside_temperature = temperature_generator.get_temperature_at_tick(time_ticker.get_current_tick())
                 house.apply(outside_temperature)
 
                 # Use the thermostat coded for the challenge
@@ -46,10 +54,8 @@ def main():
                 print(f"******** TIME {time_ticker.str()} - OUTSIDE TEMPERATURE {outside_temperature:.02f}°C *********")
                 house.print_debug_status()
 
-        # Update pysmarthome logic
-
         # Render graphics
-        screen.fill((0, 0, 0))
+        render(screen, time_ticker.str(), outside_temperature, house.get_rooms())
         pygame.display.flip()
 
         # Limit the frame rate
