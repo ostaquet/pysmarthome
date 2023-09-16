@@ -3,6 +3,7 @@ import pytest
 
 from pysmarthome.exceptions import InputParameterError
 from pysmarthome.house import House
+from pysmarthome.room import Room
 
 
 def test_house_init():
@@ -36,6 +37,22 @@ def test_ensure_that_apply_is_applied_on_all_rooms():
     for i in range(0, house.count_rooms()):
         initial_temperature.append(house.get_room(i).get_temperature())
         house.get_room(i).heating_enabled = True
+
+    house.apply(30.0)
+
+    for i in range(0, house.count_rooms()):
+        assert abs(initial_temperature[i] - house.get_room(i).get_temperature()) > 0.1
+
+
+def test_list_of_rooms_should_not_include_apply_logic_but_must_be_considered_when_apply():
+    house: House = House()
+    assert house.count_rooms() == 5
+
+    initial_temperature: List[float] = []
+
+    for room in house.get_rooms():
+        initial_temperature.append(room.get_temperature())
+        room.heating_enabled = True
 
     house.apply(30.0)
 

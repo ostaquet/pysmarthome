@@ -1,5 +1,6 @@
 import pygame
 
+from challenge.thermostat import use_thermostat
 from pysmarthome.common import EVENT_TIME_TICK
 from pysmarthome.house import House
 from pysmarthome.temperature import OutsideTemperatureSimulator
@@ -32,10 +33,16 @@ def main():
             if event.type == pygame.QUIT:
                 is_running = False
             if event.type == EVENT_TIME_TICK:
+                # Apply internal logic at each time tick
                 time_ticker.increment()
                 outside_temperature: float \
                     = temperature_generator.get_temperature_at_tick(time_ticker.get_current_tick())
                 house.apply(outside_temperature)
+
+                # Use the thermostat coded for the challenge
+                use_thermostat(house.get_rooms(), outside_temperature)
+
+                # Display some debug information
                 print(f"******** TIME {time_ticker.str()} - OUTSIDE TEMPERATURE {outside_temperature:.02f}°C *********")
                 house.print_debug_status()
 

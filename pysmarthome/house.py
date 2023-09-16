@@ -1,13 +1,13 @@
 from typing import List
 
 from pysmarthome.exceptions import InputParameterError
-from pysmarthome.room import Room
+from pysmarthome.room import Room, RoomLogic
 
 
 class House:
     def __init__(self):
-        self._rooms: List[Room] = [Room("Living room"), Room("Kitchen"), Room("Hall"),
-                                   Room("Bedroom"), Room("Bathroom")]
+        self._rooms: List[RoomLogic] = [RoomLogic("Living room"), RoomLogic("Kitchen"), RoomLogic("Hall"),
+                                   RoomLogic("Bedroom"), RoomLogic("Bathroom")]
 
     def get_room(self, room_number: int) -> Room:
         if room_number < 0 or room_number >= self.count_rooms():
@@ -35,3 +35,6 @@ class House:
             else:
                 status = status + "OFF"
             print(f"{room.get_name()} - T° {room.get_temperature():.02f}°C ({status})")
+
+    def get_rooms(self) -> List[Room]:
+        return self._rooms

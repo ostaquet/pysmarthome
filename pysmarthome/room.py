@@ -11,6 +11,8 @@ class Room:
     def get_name(self) -> str:
         return self._name
 
+
+class RoomLogic(Room):
     def apply(self, temperature_exterior: float):
         # Apply temperature evolution in the room based on external temperature, internal temperature
         # and actuators. This function aimed to be applied every second (animation) which is about

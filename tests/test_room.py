@@ -1,4 +1,4 @@
-from pysmarthome.room import Room
+from pysmarthome.room import Room, RoomLogic
 
 
 def test_init_with_default_values():
@@ -11,7 +11,7 @@ def test_init_with_default_values():
 
 
 def test_apply_inertia_increasing_temperature():
-    room: Room = Room("Living room")
+    room: RoomLogic = RoomLogic("Living room")
     assert room.get_temperature() == 20.0
     assert not room.window_opened
     assert not room.heating_enabled
@@ -26,7 +26,7 @@ def test_apply_inertia_increasing_temperature():
 
 
 def test_apply_inertia_decreasing_temperature():
-    room: Room = Room("Living room")
+    room: RoomLogic = RoomLogic("Living room")
     assert room.get_temperature() == 20.0
     assert not room.window_opened
     assert not room.heating_enabled
@@ -41,7 +41,7 @@ def test_apply_inertia_decreasing_temperature():
 
 
 def test_apply_external_impact_with_window_opened_increasing_temperature():
-    room: Room = Room("Living room")
+    room: RoomLogic = RoomLogic("Living room")
     room.window_opened = True
     assert room.get_temperature() == 20.0
     assert room.window_opened
@@ -57,7 +57,7 @@ def test_apply_external_impact_with_window_opened_increasing_temperature():
 
 
 def test_apply_external_impact_with_window_opened_decreasing_temperature():
-    room: Room = Room("Living room")
+    room: RoomLogic = RoomLogic("Living room")
     room.window_opened = True
     assert room.get_temperature() == 20.0
     assert room.window_opened
@@ -73,7 +73,7 @@ def test_apply_external_impact_with_window_opened_decreasing_temperature():
 
 
 def test_apply_heating_system():
-    room: Room = Room("Living room")
+    room: RoomLogic = RoomLogic("Living room")
     room.heating_enabled = True
     assert room.get_temperature() == 20.0
     assert not room.window_opened
