@@ -3,7 +3,6 @@ import pytest
 
 from pysmarthome.exceptions import InputParameterError
 from pysmarthome.house import House
-from pysmarthome.room import Room
 
 
 def test_house_init():
