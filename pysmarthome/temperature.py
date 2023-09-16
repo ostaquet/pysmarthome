@@ -8,7 +8,7 @@ class OutsideTemperatureSimulator:
         if minimum > maximum:
             raise InputParameterError(f"Minimum temperature {minimum} is above maximum temperature {maximum}")
         if number_of_ticks_per_virtual_day <= 0:
-            raise InputParameterError(f"Number of ticks per day cannot be zero or negative. Usual value is 240.")
+            raise InputParameterError("Number of ticks per day cannot be zero or negative. Usual value is 240.")
 
         self._min: int = minimum
         self._max: int = maximum
